@@ -1,0 +1,160 @@
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{gradschoolessentials}[Tools for Skools]
+% Ever been using the TeX for quantum HW and said, "Damn this is brutal!"
+% Efficiency package for the LaTeX ninja in all of us!
+% ---------------------------------------------------------------
+% 2021, 2022 : G. Riggs
+
+%% Initial stuff
+%\RequirePackage{imakeidx}
+\RequirePackage{cancel}
+\RequirePackage{xstring}
+\RequirePackage{amsmath}
+\RequirePackage{amssymb}
+\RequirePackage{graphicx}
+\RequirePackage{color}
+\newcommand{\anscolor}{\color[rgb]{0.8,0.1,0.1}}
+\newcommand{\sectioncolor}{\color[rgb]{0.1,0.1,0.8}}
+
+ %% Adjust margins
+\addtolength{\oddsidemargin}{-0.5in}
+\addtolength{\evensidemargin}{-0.5in}
+\addtolength{\textwidth}{1.00in}
+\addtolength{\topmargin}{-0.5in}
+\addtolength{\textheight}{1.00in}
+
+%% Parse options
+\DeclareOption{green}{\renewcommand{\anscolor}{\color[rgb]{0.1,0.8,0.1}}}
+\DeclareOption{blue}{\renewcommand{\anscolor}{\color[rgb]{0.1,0.1,0.8}}}
+\DeclareOption*{\PackageWarning{examplepackage}{Unknown ‘\CurrentOption’}}
+\ProcessOptions\relax
+
+%% Sections are "Problem #_"
+\newcounter{problem}[section]
+\newenvironment{problem}[1][]{\refstepcounter{problem}\par\bigskip\medskip 
+\noindent \textbf{\large Problem \theproblem #1}
+{\Huge ......................................................... \\\\} 
+\rmfamily\noindent\normalsize}{\medskip}
+
+%% Macros for title and subproblems
+\newcommand{\capword}[1]{$\mathcal{\StrLeft{#1}{1}}$\StrGobbleLeft{#1}{1}}
+%\newcommand{\hwtitle}[4]{\section*{#1}\Large{#2\\{\it \capword{#3}~\capword{#4}}{\begin{flushright} \small \today \end{flushright}}\medskip}}
+\newcommand{\hwtitle}[4]{\section*{#1}\Large{#2\\
+	\begin{minipage}{.45\linewidth}
+	    \begin{flushleft}
+			{\it \capword{#3}~\capword{#4}}
+		\end{flushleft}
+	\end{minipage}
+	\begin{minipage}{.53\linewidth}
+	    \begin{flushright}
+			{\normalsize \bf \today}
+		\end{flushright}
+	\end{minipage}
+	\medskip}}
+\newcommand{\subprob}[1]{\noindent{\bf \sectioncolor (#1)}} % (a)
+\newcommand{\subsubprob}[1]{\bigskip\noindent{\it \sectioncolor #1}.} % ii.
+
+%% Answer boxes
+\newcommand{\ans}[1]{{\anscolor \boxed{#1}}} % Color and box equations
+\newcommand{\anst}[1]{{\bf \anscolor #1}}    % Bold color text
+
+%% Sets
+\newcommand{\N}{\mathbb{N}} % natural numbers
+\newcommand{\Z}{\mathbb{Z}} % integers
+\newcommand{\Q}{\mathbb{Q}} % rational numbers
+\newcommand{\R}{\mathbb{R}} % real numbers
+\newcommand{\C}{\mathbb{C}} % complex numbers
+\newcommand{\set}[1]{\left\lbrace#1\right\rbrace} % set -> { }
+\newcommand{\bigset}[1]{\big\lbrace#1\big\rbrace}  
+\newcommand{\biggset}[1]{\bigg\lbrace#1\bigg\rbrace} 
+\newcommand{\Bigset}[1]{\Big\lbrace#1\Big\rbrace} 
+\newcommand{\Biggset}[1]{\Bigg\lbrace#1\Bigg\rbrace}
+
+%% Special functions
+\newcommand{\erf}{\text{erf}}    % erf(x)
+\newcommand{\sgn}{\text{sgn}}    % sgn(x)
+\newcommand{\res}{\text{Res}}    % Res(x)
+\newcommand{\PV}{\text{P.V.}}    % principal value P.V.
+\newcommand{\varPV}{\mathcal{P}} % variant P.V.
+\renewcommand{\Re}{\mathcal{R}e} % real part
+\renewcommand{\Im}{\mathcal{I}m} % imaginary part
+%\renewcommand{\Im}{\text{Im}} % imaginary part
+
+%% Vector stuff
+\newcommand{\bhat}[1]{\hat{\mathbf{#1}}}                                  % latin unit vector
+\newcommand{\bhats}[1]{\hat{\boldsymbol{#1}}}                             % greek unit vector
+\newcommand{\vdot}[2]{\mathbf{#1}\cdot\mathbf{#2}}                        % dot product
+\newcommand{\vcross}[2]{\mathbf{#1}\times\mathbf{#2}}                     % cross product
+\newcommand{\DDt}[2]{\big[\partial_t#1 + (\mathbf{#2}\cdot\nabla)#1\big]} % convective derivative
+
+%% Derivatives
+\renewcommand{\d}[1]{\partial_{#1}}                           % shorthand partial
+\newcommand{\slashd}[1]{\cancel{\partial}_{#1}}               % Feynmann slash
+\newcommand{\pdx}[1]{\frac{\partial}{\partial#1}}             % partial operator
+\newcommand{\ddx}[1]{\frac{d}{d#1}} 						  % total derivative operator
+\newcommand{\pdxn}[2]{\frac{\partial^{#2}}{\partial#1^{#2}}}  % partial^n operator
+\newcommand{\ddxn}[2]{\frac{d^{#2}}{d#1^{#2}}} 				  % total n derivative operator
+\newcommand{\pd}[2]{\frac{\partial#1}{\partial#2}} 			  % partial/partial
+\newcommand{\dd}[2]{\frac{d#1}{d#2}} 						  % total derivative
+\newcommand{\pdInline}[2]{\partial#1/\partial#2} 			  % partial/partial inline
+\newcommand{\ddInline}[2]{d#1/d#2}						      % total derivative inline
+\newcommand{\pdn}[3]{\frac{\partial^{#3}#1}{\partial#2^{#3}}} % partial^n/partial^n
+\newcommand{\ddn}[3]{\frac{d^{#3}#1}{d#2^{#3}}} 			  % total nth derivative
+
+%% Vector derivatives
+\newcommand{\dotbold}[1]{\dot{\mathbf{#1}}}                         % vector time derivative
+\renewcommand{\div}[1]{\nabla\cdot\mathbf{#1}}                      % divergence
+\newcommand{\curl}[1]{\nabla\times\mathbf{#1}}                      % curl
+\newcommand{\convect}[1]{\partial_t #1 + (\mathbf{v}\cdot\nabla)#1} % convective derivative
+
+%% Bras <x|
+\newcommand{\ba}[1]{\left\langle #1\right\rvert} 
+\newcommand{\bra}[1]{\big\langle #1\big\rvert}
+\newcommand{\bbra}[1]{\bigg\langle #1\bigg\rvert}
+\newcommand{\Bra}[1]{\Big\langle #1\Big\rvert}
+\newcommand{\BBra}[1]{\Bigg\langle #1\Bigg\rvert}
+
+%% Kets |x>
+\newcommand{\ka}[1]{\left\rvert #1\right\rangle}
+\newcommand{\ket}[1]{\big\rvert #1\big\rangle}
+\newcommand{\kket}[1]{\bigg\rvert #1\bigg\rangle}
+\newcommand{\Ket}[1]{\Big\rvert #1\Big\rangle}
+\newcommand{\KKet}[1]{\Bigg\rvert #1\Bigg\rangle}
+
+%% Bra-kets <x|y|z>
+\newcommand{\brk}[3]{\left\langle #1\rvert #2\rvert #3\right\rangle}
+\newcommand{\brak}[3]{\big\langle #1\big\rvert #2\big\rvert #3\big\rangle}
+\newcommand{\bbrak}[3]{\bigg\langle #1\bigg\rvert #2\bigg\rvert #3\bigg\rangle}
+\newcommand{\Brak}[3]{\Big\langle #1\Big\rvert #2\Big\rvert #3\Big\rangle}
+\newcommand{\BBrak}[3]{\Bigg\langle #1\Bigg\rvert #2\Bigg\rvert #3\Bigg\rangle}
+
+%% Ensemble averages <x>
+\newcommand{\bk}[1]{\left\langle #1\right\rangle}
+\newcommand{\bak}[1]{\big\langle #1\big\rangle}
+\newcommand{\bbak}[1]{\bigg\langle #1\bigg\rangle}
+\newcommand{\Bak}[1]{\Big\langle #1\Big\rangle}
+\newcommand{\BBak}[1]{\BBig\langle #1\BBig\rangle}
+
+%% Standard expressions
+\newcommand{\lorentzcgs}[1]{\left(\mathbf{E} + \frac{\vcross{#1}{B}}{c}\right)}
+\newcommand{\lorentzsi}[1]{\left(\mathbf{E} + \vcross{#1}{B}\right)}
+
+\newcommand{\vlasov}[1]{\d{t} #1 + \mathbf{v}\cdot\nabla #1 + \frac{\mathbf{F}}{m}\cdot \nabla_v #1 }
+\newcommand{\vlasova}[1]{\pd{#1}{t} + \mathbf{v}\cdot\pd{#1}{\mathbf{r}} + \frac{\mathbf{F}}{m}\cdot \pd{#1}{\mathbf{v}}}
+\newcommand{\vlasovb}[1]{\d{t} #1 + \mathbf{v}\cdot\d{\mathbf{r}} #1 + \frac{\mathbf{F}}{m}\cdot \d{\mathbf{v}} #1 }
+\newcommand{\vlasovOneD}[1]{\d{t} #1 + v\d{x} #1 + \frac{F}{m}\d{v} #1 }
+\newcommand{\vlasovSource}[1]{\d{t} #1 + \mathbf{v}\cdot\nabla #1 + \frac{\mathbf{F}}{m}\cdot \nabla_v #1 = (\text{\sc sources}) - (\text{\sc sinks} ) }
+
+
+
+%% Figures
+\newcommand{\fig}[4]
+{\begin{figure}[h!]
+	\centering
+	\includegraphics[scale = #1]{#2}
+	\caption{\small{#3}} 
+	\label{#4}
+\end{figure}
+}
+
+\def \variable{500}
