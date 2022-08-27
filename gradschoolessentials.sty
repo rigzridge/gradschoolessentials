@@ -6,7 +6,7 @@
 % 2021, 2022 : G. Riggs
 
 %% Initial stuff
-%\RequirePackage{imakeidx}
+%\RequirePackage{imakeidx}	
 \RequirePackage{cancel}
 \RequirePackage{xstring}
 \RequirePackage{amsmath}
@@ -14,7 +14,16 @@
 \RequirePackage{graphicx}
 \RequirePackage{color}
 \newcommand{\anscolor}{\color[rgb]{0.8,0.1,0.1}}
+\newcommand{\namecolor}{\color[rgb]{0.0,0.0,0.0}}
 \newcommand{\sectioncolor}{\color[rgb]{0.1,0.1,0.8}}
+
+%% Found here (edited)... https://tex.stackexchange.com/questions/79393/retrieve-length-of-a-character
+\newcommand{\breaknote}{\normalsize
+	\dotfill
+    \vspace*{-0.5ex}
+    \par\noindent\hrulefill\raisebox{-0.5ex}{$\oint$}\par
+    \vspace{0.5ex}
+}
 
  %% Adjust margins
 \addtolength{\oddsidemargin}{-0.5in}
@@ -31,13 +40,30 @@
 
 %% Sections are "Problem #_"
 \newcounter{problem}[section]
-\newenvironment{problem}[1][]{\refstepcounter{problem}\par\bigskip\medskip 
-\noindent \textbf{\large Problem \theproblem #1}
-{\Huge ......................................................... \\\\} 
-\rmfamily\noindent\normalsize}{\medskip}
+\newenvironment{problem}[1][]{
+	\refstepcounter{problem}\par\bigskip\medskip 
+	\noindent \textbf{\large Problem \theproblem #1}
+	%{\Huge ......................................................... \\\\} 
+	\breaknote
+	\rmfamily\noindent\normalsize}{}
+%% Subproblems are alphabetic, as "(a)" 
+\newcounter{subprob}[problem]
+\renewcommand\thesubprob{\alph{subprob}}
+\newenvironment{subprob}[1][]{
+    \refstepcounter{subprob}\par\noindent
+    {\bf \sectioncolor (\thesubprob) }}{}
+%% Subsubproblems are roman, as "ii." 
+\newcounter{subsubprob}[subprob]
+\renewcommand\thesubsubprob{\roman{subsubprob}}
+\newenvironment{subsubprob}[1][]{
+    \refstepcounter{subsubprob}\par\noindent
+    {\it \sectioncolor ~\thesubsubprob. }}{}
+%% Old way
+%\newcommand{\subprob}[1]{\noindent{\bf \sectioncolor (#1)}} % (a)
+%\newcommand{\subsubprob}[1]{\bigskip\noindent{\it \sectioncolor #1}.} % ii.
 
-%% Macros for title and subproblems
-\newcommand{\capword}[1]{$\mathcal{\StrLeft{#1}{1}}$\StrGobbleLeft{#1}{1}}
+%% Macros for title
+\newcommand{\capword}[1]{\namecolor$\mathcal{\StrLeft{#1}{1}}\frak{\StrGobbleLeft{#1}{1}}$}
 %\newcommand{\hwtitle}[4]{\section*{#1}\Large{#2\\{\it \capword{#3}~\capword{#4}}{\begin{flushright} \small \today \end{flushright}}\medskip}}
 \newcommand{\hwtitle}[4]{\section*{#1}\Large{#2\\
 	\begin{minipage}{.45\linewidth}
@@ -51,8 +77,6 @@
 		\end{flushright}
 	\end{minipage}
 	\medskip}}
-\newcommand{\subprob}[1]{\noindent{\bf \sectioncolor (#1)}} % (a)
-\newcommand{\subsubprob}[1]{\bigskip\noindent{\it \sectioncolor #1}.} % ii.
 
 %% Answer boxes
 \newcommand{\ans}[1]{{\anscolor \boxed{#1}}} % Color and box equations
@@ -81,6 +105,8 @@
 %\renewcommand{\Im}{\text{Im}} % imaginary part
 
 %% Vector stuff
+\newcommand{\B}[1]{\mathbf{#1}}
+\newcommand{\BS}[1]{\boldsymbol{#1}}
 \newcommand{\bhat}[1]{\hat{\mathbf{#1}}}                                  % latin unit vector
 \newcommand{\bhats}[1]{\hat{\boldsymbol{#1}}}                             % greek unit vector
 \newcommand{\vdot}[2]{\mathbf{#1}\cdot\mathbf{#2}}                        % dot product
@@ -100,9 +126,11 @@
 \newcommand{\ddInline}[2]{d#1/d#2}						      % total derivative inline
 \newcommand{\pdn}[3]{\frac{\partial^{#3}#1}{\partial#2^{#3}}} % partial^n/partial^n
 \newcommand{\ddn}[3]{\frac{d^{#3}#1}{d#2^{#3}}} 			  % total nth derivative
+\newcommand{\derivdef}[2]{\lim\limits_{\delta#2\to0}\frac{#1(#2+\delta#2)-#1(#2)}{\delta#2}}
 
 %% Vector derivatives
 \newcommand{\dotbold}[1]{\dot{\mathbf{#1}}}                         % vector time derivative
+\newcommand{\ddotbold}[1]{\ddot{\mathbf{#1}}}                       % vector 2nd time derivative
 \renewcommand{\div}[1]{\nabla\cdot\mathbf{#1}}                      % divergence
 \newcommand{\curl}[1]{\nabla\times\mathbf{#1}}                      % curl
 \newcommand{\convect}[1]{\partial_t #1 + (\mathbf{v}\cdot\nabla)#1} % convective derivative
