@@ -111,7 +111,6 @@
 \newcommand{\bhats}[1]{\hat{\boldsymbol{#1}}}                             % greek unit vector
 \newcommand{\vdot}[2]{\mathbf{#1}\cdot\mathbf{#2}}                        % dot product
 \newcommand{\vcross}[2]{\mathbf{#1}\times\mathbf{#2}}                     % cross product
-\newcommand{\DDt}[2]{\big[\partial_t#1 + (\mathbf{#2}\cdot\nabla)#1\big]} % convective derivative
 
 %% Derivatives
 \renewcommand{\d}[1]{\partial_{#1}}                           % shorthand partial
@@ -133,7 +132,8 @@
 \newcommand{\ddotbold}[1]{\ddot{\mathbf{#1}}}                       % vector 2nd time derivative
 \renewcommand{\div}[1]{\nabla\cdot\mathbf{#1}}                      % divergence
 \newcommand{\curl}[1]{\nabla\times\mathbf{#1}}                      % curl
-\newcommand{\convect}[1]{\partial_t #1 + (\mathbf{v}\cdot\nabla)#1} % convective derivative
+\newcommand{\DDt}[1]{\frac{D#1}{Dt}}
+\newcommand{\convect}[2]{[\partial_t#1 + (\mathbf{#2}\cdot\nabla)#1} % convective derivative
 
 %% Bras <x|
 \newcommand{\ba}[1]{\left\langle #1\right\rvert} 
