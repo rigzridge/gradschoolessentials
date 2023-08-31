@@ -1,0 +1,188 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+
+\usepackage[blue]{gradschoolessentials}
+
+
+
+\usepackage[colorlinks=true,
+linkcolor=magenta,
+urlcolor=green,
+citecolor=blue]{hyperref}
+
+\usepackage{bigfoot}
+\usepackage{listings}
+\lstset
+{
+    language={[LaTeX]TeX},
+    basicstyle=\tt,
+}
+
+\usepackage{tcolorbox}
+\newtcolorbox{mybox}[1]{colback=gray!5!white,colframe=gray!75!black,fonttitle=\bfseries,title=#1}
+
+\newcommand{\verbprint}[1]{
+\begin{minipage}{0.5\linewidth}
+%\begin{verbatim}
+    %\lstinline|#1|
+%\end{verbatim}
+\end{minipage}
+\begin{minipage}{0.5\linewidth}
+    $#1$
+\end{minipage}
+}
+
+\newcommand{\verbsec}[1]{\subsection{\texttt{#1}}}
+\newcommand{\verbsubsec}[1]{\subsubsection{\texttt{#1}}}
+
+
+\begin{document}
+
+\begin{center}
+	\bigskip\bigskip
+	%\vfill
+	\huge{\sc $\mathsf{GradSchoolEssentials}$\\}
+	\bigskip\bigskip\bigskip
+	%\vfill
+	\large{\LaTeX\, \it{Style Guide \---- ver. 0.9\\}}
+    \bigskip
+    \copyright 2021\---2023, Greg Riggs\\
+    %\bigskip
+    email: \url{rigzridge@gmail.com}
+    %[WVU Dept. of Physics \& Astronomy]
+\end{center}
+
+\tableofcontents
+
+\section{Motivation}
+
+Hey there, \LaTeX\, ninja, and thanks for your interest in this project! It all started in 2021, when I finally tired of typing out some opaque, monstrous expression\footnote{ \verb|\frac{\partial\hat\boldsymbol{x}}{\partial t}| } when all I wanted to see was a simple $\pd{\bhats{x}}{t}$! With $\mathsf{gradschoolessentials}$, printing this expression is as easy as \verb|\pd{\bhats{x}}{t}|, which I believe is a more literate approach.
+\\\\
+Stated plainly, this style file provides macros to quickly and conveniently produce the high-quality typesetting that \TeX\, is famous for. The style guide itself is intended as a working document, so check the github (\url{https://github.com/rigzridge/gradschoolessentials}) for more information.
+
+\breaknote
+
+\section{Initialization}
+Using $\mathsf{gradschoolessentials}$ is as simple as including as single \verb|\usepackage{}| command! The following is a minimum working example: 
+\begin{lstlisting}
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+
+\usepackage[blue]{gradschoolessentials}
+
+\begin{document}
+$$\N\in\Z\in\Q\in\R\in\C$$
+\end{document}
+\end{lstlisting}
+
+\section{Environments}
+The $\mathsf{gradschoolessentials}$ style provides three new environments to simplify homework. Indexing is done automatically, and the operation of \verb|\label{}| and \verb|\ref{}| is analogous to its use in \verb|\section{}|, \verb|\subsection{}|, \verb|\subsubsection{}|.
+
+\verbsec{problem}
+Likely a homework problem, and numerically indexed. Importantly, the counter associated with \verb|problem| ({\it i.e.}, \verb|\theproblem|) will reset {when a new section is created}.
+\begin{mybox}{Example of \texttt{problem} environment}
+\begin{lstlisting}
+\begin{problem}\label{prob::e^-tx}
+    Here is an example problem. Show that 
+    $$\int_0^\infty e^{-tx} dx = \frac{1}{t}.$$
+\end{problem}
+\end{lstlisting}
+\begin{problem}\label{prob::e^-tx}
+    Here is an example problem. Show that 
+    $$\int_0^\infty e^{-tx} dx = \frac{1}{t}.$$
+\end{problem}
+\end{mybox}
+
+\verbsec{subprob}
+An alphabetically indexed subproblem. Will appear as current \verb|\sectioncolor| (must adjust \verb|gradschooolessentials.sty| to change).
+
+\begin{mybox}{A \texttt{problem} with \texttt{subprob}}
+\begin{lstlisting}
+\begin{problem}\label{prob::factorial}
+    \begin{subprob}\label{subprob::gamma}
+        Using the results of Problem \ref{prob::e^-tx}, 
+        verify the well-known relation 
+        $$\int_0^\infty x^ne^{-x} dx = n!.$$
+    \end{subprob}
+    \begin{subprob}
+        Confirm your result for part \ref{subprob::gamma} 
+        using repeated integration by parts.
+    \end{subprob}
+\end{problem}
+\end{lstlisting}
+\begin{problem}\label{prob::factorial}
+    \begin{subprob}\label{subprob::gamma}
+        Using the results of Problem \ref{prob::e^-tx}, directly verify the well-known relation 
+        $$\int_0^\infty x^ne^{-x} dx = n!.$$
+    \end{subprob}
+    \begin{subprob}
+        Confirm your result for part \ref{subprob::gamma} using repeated integration by parts.
+    \end{subprob}
+\end{problem}
+\end{mybox}
+
+\verbsec{subsubprob}
+A sub-subproblem, indexed by an italic, lower-case roman numeral. Will appear as current \verb|\sectioncolor|.
+
+\begin{mybox}{A \texttt{problem} with \texttt{subprob} and \texttt{subsubprob}}
+\begin{lstlisting}
+\begin{problem}\label{prob::factorial}
+    \begin{subprob}\label{subprob::gamma}
+        Using the results of Problem \ref{prob::e^-tx}, 
+        verify the well-known relation 
+        $$\int_0^\infty x^ne^{-x} dx = n!.$$
+    \end{subprob}
+    \begin{subprob}
+        Confirm your result for part \ref{subprob::gamma} 
+        using repeated integration by parts.
+    \end{subprob}
+\end{problem}
+\end{lstlisting}
+\begin{problem}\label{prob::factorial}
+    \begin{subprob}\label{subprob::gamma}
+        Using the results of Problem \ref{prob::e^-tx}, verify the well-known relation 
+        $$\int_0^\infty x^ne^{-x} dx = n!.$$
+    \end{subprob}
+    \begin{subprob}
+        Confirm your result for part \ref{subprob::gamma} using repeated integration by parts.
+    \end{subprob}
+\end{problem}
+\end{mybox}
+
+\section{Tools}
+\verbsec{hwtitle}
+\verbsec{ans}
+\verbsec{anst}
+
+\section{Sets}
+\verbsec{N}
+Natural numbers
+\\\\
+\begin{minipage}{0.5\linewidth}
+%\color[rgb]{0.1,0.5,0.9}
+    \verb|$n\in\N\implies n+1\in\N$|
+\end{minipage}
+\begin{minipage}{0.5\linewidth}
+    $n\in\N\implies n+1\in\N$
+\end{minipage}
+
+\verbsec{Z}
+Integers
+\\\\
+\begin{minipage}{0.5\linewidth}
+    \verb|$n\in\Z\implies n^2\in\N$|
+\end{minipage}
+\begin{minipage}{0.5\linewidth}
+    $n\in\Z\implies n^2\in\N$
+\end{minipage}
+
+\verbsec{Q}
+\verbsec{R}
+\verbsec{C}
+\verbsec{set}
+\verbsubsec{bigset}
+\verbsubsec{biggset}
+\verbsubsec{Bigset}
+\verbsubsec{Biggset}
+
+\end{document}
