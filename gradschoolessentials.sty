@@ -3,7 +3,7 @@
 % Ever been using the TeX for quantum HW and said, "Damn this is brutal!"
 % Efficiency package for the LaTeX ninja in all of us!
 % ---------------------------------------------------------------
-% 2021, 2022 : G. Riggs
+% (c) 2020-2023, Greg Riggs
 
 %% Initial stuff
 %\RequirePackage{imakeidx}	
@@ -17,6 +17,16 @@
 \newcommand{\namecolor}{\color[rgb]{0.0,0.0,0.0}}
 \newcommand{\sectioncolor}{\color[rgb]{0.1,0.1,0.8}}
 
+% To do!
+% \,\textrm{}
+% ({\sc Left})
+\newcommand{\eg}{{\it e.g.}}
+\newcommand{\ie}{{\it i.e.}}
+\newcommand{\trm}[1]{\textrm{#1}}
+
+% Make this optional!
+%\usepackage{dutchcal}
+
 %% Found here (edited)... https://tex.stackexchange.com/questions/79393/retrieve-length-of-a-character
 \newcommand{\breaknote}{\normalsize
 	\dotfill
@@ -26,11 +36,11 @@
 }
 
  %% Adjust margins
-\addtolength{\oddsidemargin}{-0.5in}
-\addtolength{\evensidemargin}{-0.5in}
-\addtolength{\textwidth}{1.00in}
-\addtolength{\topmargin}{-0.5in}
-\addtolength{\textheight}{1.00in}
+% \addtolength{\oddsidemargin}{-0.5in}
+% \addtolength{\evensidemargin}{-0.5in}
+% \addtolength{\textwidth}{1.00in}
+% \addtolength{\topmargin}{-0.5in}
+% \addtolength{\textheight}{1.00in}
 
 %% Parse options
 \DeclareOption{green}{\renewcommand{\anscolor}{\color[rgb]{0.1,0.8,0.1}}}
@@ -39,6 +49,7 @@
 \ProcessOptions\relax
 
 %% Sections are "Problem #_"
+% Counter resets each section! Just something to be aware of
 \newcounter{problem}[section]
 \newenvironment{problem}[1][]{
 	\refstepcounter{problem}\par\bigskip\medskip 
@@ -63,9 +74,10 @@
 %\newcommand{\subsubprob}[1]{\bigskip\noindent{\it \sectioncolor #1}.} % ii.
 
 %% Macros for title
-\newcommand{\capword}[1]{\namecolor$\mathcal{\StrLeft{#1}{1}}\frak{\StrGobbleLeft{#1}{1}}$}
+%\newcommand{\capword}[1]{\namecolor$\mathcal{\StrLeft{#1}{1}}\mathfrak{\StrGobbleLeft{#1}{1}}$}
+\newcommand{\capword}[1]{\namecolor$\mathbb{\StrLeft{#1}{1}}\mathsf{\StrGobbleLeft{#1}{1}}$}
 %\newcommand{\hwtitle}[4]{\section*{#1}\Large{#2\\{\it \capword{#3}~\capword{#4}}{\begin{flushright} \small \today \end{flushright}}\medskip}}
-\newcommand{\hwtitle}[4]{\section*{#1}\Large{#2\\
+\newcommand{\hwtitle}[4]{\section*{#1}{ \Large #2\\
 	\begin{minipage}{.45\linewidth}
 	    \begin{flushleft}
 			{\it \capword{#3}~\capword{#4}}
@@ -94,6 +106,8 @@
 \newcommand{\Bigset}[1]{\Big\lbrace#1\Big\rbrace} 
 \newcommand{\Biggset}[1]{\Bigg\lbrace#1\Bigg\rbrace}
 
+%% Groups 
+
 %% Special functions
 \newcommand{\erf}{\text{erf}}    % erf(x)
 \newcommand{\sgn}{\text{sgn}}    % sgn(x)
@@ -102,15 +116,19 @@
 \newcommand{\varPV}{\mathcal{P}} % variant P.V.
 \renewcommand{\Re}{\mathcal{R}e} % real part
 \renewcommand{\Im}{\mathcal{I}m} % imaginary part
-%\renewcommand{\Im}{\text{Im}} % imaginary part
+\newcommand{\varRe}{\text{Re}}   % real part (variant)
+\newcommand{\varIm}{\text{Im}}   % imaginary part (variant)
+
+\newcommand{\lr}[1]{\left(#1\right)}
+\newcommand{\lrb}[1]{\left[#1\right]}
 
 %% Vector stuff
-\newcommand{\B}[1]{\mathbf{#1}}
-\newcommand{\BS}[1]{\boldsymbol{#1}}
-\newcommand{\bhat}[1]{\hat{\mathbf{#1}}}                                  % latin unit vector
-\newcommand{\bhats}[1]{\hat{\boldsymbol{#1}}}                             % greek unit vector
-\newcommand{\vdot}[2]{\mathbf{#1}\cdot\mathbf{#2}}                        % dot product
-\newcommand{\vcross}[2]{\mathbf{#1}\times\mathbf{#2}}                     % cross product
+\newcommand{\V}[1]{\mathbf{#1}}                        % shortcut for boldface                
+\newcommand{\VS}[1]{\boldsymbol{#1}}                   % shorcut for boldsymbol
+\newcommand{\bhat}[1]{\hat{\mathbf{#1}}}               % latin unit vector
+\newcommand{\bhats}[1]{\hat{\boldsymbol{#1}}}          % greek unit vector
+\newcommand{\vdot}[2]{\mathbf{#1}\cdot\mathbf{#2}}     % dot product
+\newcommand{\vcross}[2]{\mathbf{#1}\times\mathbf{#2}}  % cross product
 
 %% Derivatives
 \renewcommand{\d}[1]{\partial_{#1}}                           % shorthand partial
@@ -125,15 +143,42 @@
 \newcommand{\ddInline}[2]{d#1/d#2}						      % total derivative inline
 \newcommand{\pdn}[3]{\frac{\partial^{#3}#1}{\partial#2^{#3}}} % partial^n/partial^n
 \newcommand{\ddn}[3]{\frac{d^{#3}#1}{d#2^{#3}}} 			  % total nth derivative
-\newcommand{\derivdef}[2]{\lim\limits_{\delta#2\to0}\frac{#1(#2+\delta#2)-#1(#2)}{\delta#2}}
+\newcommand{\derivdef}[2]{\lim\limits_{\delta#2\to0}\frac{#1(#2+\delta#2)-#1(#2)}{\delta#2}} % Derivative definition
 
 %% Vector derivatives
 \newcommand{\dotbold}[1]{\dot{\mathbf{#1}}}                         % vector time derivative
 \newcommand{\ddotbold}[1]{\ddot{\mathbf{#1}}}                       % vector 2nd time derivative
 \renewcommand{\div}[1]{\nabla\cdot\mathbf{#1}}                      % divergence
+\newcommand{\deldot}{\nabla\cdot}                      % divergence
 \newcommand{\curl}[1]{\nabla\times\mathbf{#1}}                      % curl
+\newcommand{\delcross}{\nabla\times}                      % curl
+
+\newcommand{\dotdel}[1]{#1\cdot\nabla}                      % vector dot del
+\newcommand{\vdotdel}[1]{\V{#1}\cdot\nabla}                      % vector dot del
+\newcommand{\crossdel}[1]{#1\times\nabla}                      % vector dot del
+\newcommand{\vcrossdel}[1]{\V{#1}\times\nabla}                      % vector dot del
+
+\newcommand{\dS}[1]{d\V{#1}}
+
+% Diff geo
+\newcommand{\radg}{\sqrt{g}}
+
+\newcommand{\x}{\times}
+\newcommand{\mc}[1]{\mathcal{#1}}
+\newcommand{\qandq}{\qquad{\rm and}\qquad}
+\newcommand{\diag}{{\rm diag}}
+
+\newcommand{\grad}{\nabla}
+
+\newcommand{\delperp}{\nabla_\perp}
+\newcommand{\delpar}{\nabla_\parallel}
+
+\newcommand{\vtil}[1]{\widetilde{\V{#1}}}
+\newcommand{\vstil}[1]{\widetilde{\VS{#1}}}
+\newcommand{\vfluc}[1]{\delta{\V{#1}}}
+
 \newcommand{\DDt}[1]{\frac{D#1}{Dt}}
-\newcommand{\convect}[2]{[\partial_t#1 + (\mathbf{#2}\cdot\nabla)#1} % convective derivative
+\newcommand{\convect}[2]{\partial_t#1 + (\mathbf{#2}\cdot\nabla)#1} % convective derivative
 
 %% Bras <x|
 \newcommand{\ba}[1]{\left\langle #1\right\rvert} 
@@ -163,19 +208,63 @@
 \newcommand{\Bak}[1]{\Big\langle #1\Big\rangle}
 \newcommand{\BBak}[1]{\BBig\langle #1\BBig\rangle}
 
-%% Standard expressions
+%% Standard math expressions
+\newcommand{\pythag}{a^2 + b^2 = c^2}
+
+%% Electromagnetism
+\newcommand{\gausscgs}{\div{E} = 4\pi\rho}
+\newcommand{\gausssi}{\div{E} = \frac{\rho}{\epsilon_0}}
+\newcommand{\bgauss}{\div{B} = 0}
+\newcommand{\faradaycgs}{c\curl{E} = -\d{t}\V{B}}
+\newcommand{\faradaysi}{\curl{E} = -\d{t}\V{B}}
+\newcommand{\amperecgs}{c\curl{B} = 4\pi\V{j}}
+\newcommand{\amperesi}{\curl{B} = \mu_0\V{j}}
+\newcommand{\amperemaxcgs}{c\curl{B} = 4\pi\V{j} + \d{t}\V{E} }
+\newcommand{\amperemaxsi}{\curl{B} = \mu_0\V{j} + \mu_0\epsilon_0\d{t}\V{B} }
+\newcommand{\maxwellcgs}{\begin{equation}\begin{split} \div{E} &= 4\pi\rho \\ \div{B} &= 0 \\ c\curl{E} &= -\d{t}\V{B} \\ c\curl{B} &= 4\pi\V{j} + \d{t}\V{E}  \end{split}\end{equation}}
+\newcommand{\maxwellcgssubeqs}
+{
+\begin{subequations} 
+\begin{alignat}{2}
+      \div{E} &= 4\pi\rho \\ 
+      \div{B} &= 0 \\ 
+      c\curl{E} &= -\d{t}\V{B} \\ 
+      c\curl{B} &= 4\pi\V{j} + \d{t}\V{E}
+\end{alignat}
+% \begin{alignat}{4}
+%       \div{E} &= 4\pi\rho  &\quad c\curl{E} &= -\d{t}\V{B}\\ 
+%       \div{B} &= 0 &\quad c\curl{B} &= 4\pi\V{j} + \d{t}\V{E}
+% \end{alignat}
+\end{subequations}
+}
 \newcommand{\lorentzcgs}[1]{\left(\mathbf{E} + \frac{\vcross{#1}{B}}{c}\right)}
 \newcommand{\lorentzsi}[1]{\left(\mathbf{E} + \vcross{#1}{B}\right)}
 
-\newcommand{\vlasov}[1]{\d{t} #1 + \mathbf{v}\cdot\nabla #1 + \frac{\mathbf{F}}{m}\cdot \nabla_v #1 }
-\newcommand{\vlasova}[1]{\pd{#1}{t} + \mathbf{v}\cdot\pd{#1}{\mathbf{r}} + \frac{\mathbf{F}}{m}\cdot \pd{#1}{\mathbf{v}}}
-\newcommand{\vlasovb}[1]{\d{t} #1 + \mathbf{v}\cdot\d{\mathbf{r}} #1 + \frac{\mathbf{F}}{m}\cdot \d{\mathbf{v}} #1 }
-\newcommand{\vlasovOneD}[1]{\d{t} #1 + v\d{x} #1 + \frac{F}{m}\d{v} #1 }
-\newcommand{\vlasovSource}[1]{\d{t} #1 + \mathbf{v}\cdot\nabla #1 + \frac{\mathbf{F}}{m}\cdot \nabla_v #1 = (\text{\sc sources}) - (\text{\sc sinks} ) }
+%% Plasma physics
+\newcommand{\plasmafreq}[1]{ \frac{4\pi n_{#1} q^2_{#1}} {m_{#1}} }
+\newcommand{\boltzmann}[1]{\d{t} #1 + \mathbf{v}\cdot\nabla #1 + \frac{\mathbf{F}}{m}\cdot \nabla_v #1 =0}
+\newcommand{\boltzmanna}[1]{\pd{#1}{t} + \mathbf{v}\cdot\pd{#1}{\mathbf{r}} + \frac{\mathbf{F}}{m}\cdot \pd{#1}{\mathbf{v}}=0}
+\newcommand{\boltzmannb}[1]{\d{t} #1 + \mathbf{v}\cdot\d{\mathbf{r}} #1 + \frac{\mathbf{F}}{m}\cdot \d{\mathbf{v}} #1 =0}
+\newcommand{\boltzmannOneD}[1]{\d{t} #1 + v\d{x} #1 + \frac{F}{m}\d{v} #1 =0}
+\newcommand{\boltzmannSource}[1]{\d{t} #1 + \mathbf{v}\cdot\nabla #1 + \frac{\mathbf{F}}{m}\cdot \nabla_v #1 = (\text{\sc sources}) - (\text{\sc sinks} ) }
 
+% Vlasov
+% - - - - - 
+% Standard (cgs)
+\newcommand{\vlasov}[1]{\d{t} #1 + \mathbf{v}\cdot\nabla #1 + \frac{e}{m}\lorentzcgs{v}\cdot \nabla_v #1 =0}
+% Conservative
+\newcommand{\vlasovcons}[1]{\d{t} #1 + \nabla\cdot\left({\mathbf{v} #1}\right) + 
+\frac{e}{m}\nabla_v\cdot
+\left[
+\lorentzcgs{v} #1 
+\right]=0
+}
 
+%% Famous problems
+\newcommand{\basel}{\sum_{n=1}^\infty \frac{1}{n^2} = \frac{\pi^2}{6}}
 
 %% Figures
+% Use with \fig{scale}{data}{caption}{label}
 \newcommand{\fig}[4]
 {\begin{figure}[h!]
 	\centering
