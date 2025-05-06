@@ -36,11 +36,11 @@
 }
 
  %% Adjust margins
-% \addtolength{\oddsidemargin}{-0.5in}
-% \addtolength{\evensidemargin}{-0.5in}
-% \addtolength{\textwidth}{1.00in}
-% \addtolength{\topmargin}{-0.5in}
-% \addtolength{\textheight}{1.00in}
+\addtolength{\oddsidemargin}{-0.5in}
+\addtolength{\evensidemargin}{-0.5in}
+\addtolength{\textwidth}{1.00in}
+\addtolength{\topmargin}{-0.5in}
+\addtolength{\textheight}{1.00in}
 
 %% Parse options
 \DeclareOption{green}{\renewcommand{\anscolor}{\color[rgb]{0.1,0.8,0.1}}}
@@ -121,10 +121,26 @@
 
 \newcommand{\lr}[1]{\left(#1\right)}
 \newcommand{\lrb}[1]{\left[#1\right]}
+\newcommand{\lrB}[1]{\left\{#1\right\}}
+\newcommand{\lrX}[2]{\left#1{#2}\right#1}
+
+\newcommand{\sinc}{{\rm sinc}}
+
+\newcommand{\capleft}{[{\sc Left}]:~}
+\newcommand{\capright}{[{\sc Right}]:~}
+\newcommand{\capup}{[{\sc Upper Panel}]:~}
+\newcommand{\capdown}{[{\sc Lower Panel}]:~}
+
+\newcommand{\capdownleft}{[{\sc Lower Left}]:~}
+\newcommand{\capdownright}{[{\sc Lower Right}]:~}
+\newcommand{\capupleft}{[{\sc Upper Left}]:~}
+\newcommand{\capupright}{[{\sc Upper Right}]:~}
 
 %% Vector stuff
-\newcommand{\V}[1]{\mathbf{#1}}                        % shortcut for boldface                
-\newcommand{\VS}[1]{\boldsymbol{#1}}                   % shorcut for boldsymbol
+\newcommand{\V}[1]{\mathbf{#1}} 
+\renewcommand{\v}[1]{\mathbf{#1}} % shortcut for boldface                
+\newcommand{\VS}[1]{\boldsymbol{#1}}     
+\newcommand{\vs}[1]{\boldsymbol{#1}} % shorcut for boldsymbol
 \newcommand{\bhat}[1]{\hat{\mathbf{#1}}}               % latin unit vector
 \newcommand{\bhats}[1]{\hat{\boldsymbol{#1}}}          % greek unit vector
 \newcommand{\vdot}[2]{\mathbf{#1}\cdot\mathbf{#2}}     % dot product
